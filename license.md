@@ -25,7 +25,8 @@ The views and conclusions contained in the software and documentation are those
 of the authors and should not be interpreted as representing official policies, 
 either expressed or implied, of the FreeBSD Project.
 
-Senparc.Weixin.MP.dll (https://github.com/JeffreySu/WeiXinMPSDK)
+Senparc.Weixin.MP.dll from https://github.com/JeffreySu/WeiXinMPSDK/
+
 Copyright (c) 2013, Jeffrey Su <www.jeffrey.su@gmail.com>
 All rights reserved.
 
@@ -49,11 +50,12 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-UIShell.OSGi.dll
-UIShell.OSGi.WebExtension.dll
-UIShell.iOpenWorks.Bootstrapper.dll
-UIShell.iOpenWorks.BundleRepository.dll
-UIShell.BundleManagementService.dll
-UIShell.PageFlowService.dll
-Copyright (c) 2014, Xi'an UI Information Technology, Co. Ltd. <uishell@uishell.com, http://www.iopenworks.com>
+UIShell.OSGi.dll,
+UIShell.OSGi.WebExtension.dll,
+UIShell.iOpenWorks.Bootstrapper.dll,
+UIShell.iOpenWorks.BundleRepository.dll,
+UIShell.BundleManagementService.dll,
+UIShell.PageFlowService.dll from http://www.iopenworks.com/
+
+Copyright (c) 2014, Xi'an UI Information Technology, Co. Ltd. <uishell@uishell.com>
 All rights reserved.
