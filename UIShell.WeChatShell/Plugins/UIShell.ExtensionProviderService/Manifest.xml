@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Bundle xmlns="urn:uiosp-bundle-manifest-2.0" SymbolicName="UIShell.ExtensionProviderService" Name="扩展提供商服务" Version="1.0.0.0" InitializedState="Active" StartLevel="2">
+  <Activator Type="UIShell.ExtensionProviderService.Activator"/>
+  
+  <Runtime>
+    <Assembly Path="bin\UIShell.ExtensionProviderService.dll" Share="true"/>
+  </Runtime>
+  
+  <ExtensionPoint Point="UIShell.WeChatProxy" />
+</Bundle>

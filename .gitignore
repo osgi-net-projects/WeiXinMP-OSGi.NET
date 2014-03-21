@@ -1,0 +1,18 @@
+# git ignore file
+
+# User-specific files
+*.suo
+*.user
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+[Oo]bj/
+*.pdb
+
+#OSGi.NET files
+log.txt
+persistent.xml
+UpdateRecord.xml
+*.dll.backup
+repository/

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Bundle xmlns="urn:uiosp-bundle-manifest-2.0" SymbolicName="UIShell.WebServiceWrapperService" StartLevel="2" Version="1.0.0.0" Name="Web 服务包装器">
+  <Activator Type="UIShell.WebServiceWrapperService.Activator"/>
+  <Runtime>
+    <Assembly Path="UIShell.WebServiceWrapperService.dll" Share="true"/>
+  </Runtime>
+  <Extension Point="UIShell.BundleManagementOptions">
+    <BundleManagementOption AllowToStarted="true" AllowToStopped="false" AllowToUninstalled="false" />
+  </Extension>
+  <ExtensionPoint Point="UIShell.WebServiceWrapperService.WebService">
+    <!--
+    <Service Name="MyTestService" Type="UIShell.WebServiceWrapperService.TestService" />
+    <Service Port="9090" Name="MyTestService" Type="UIShell.WebServiceWrapperService.TestService" />
+    <Service Port="9090" Name="MyTestService" Type="UIShell.WebServiceWrapperService.TestService" Mode="SingleCall" />
+    -->
+  </ExtensionPoint>
+</Bundle>

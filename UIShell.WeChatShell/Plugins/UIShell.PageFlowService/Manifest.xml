@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Bundle xmlns="urn:uiosp-bundle-manifest-2.0" SymbolicName="UIShell.PageFlowService" Version="1.0.0.0"
+        InitializedState="Active" StartLevel="2" Name="页面流程服务">
+  <Activator Type="UIShell.PageFlowService.Activator"/>
+  <Runtime>
+    <Assembly Path="bin/UIShell.PageFlowService.dll" Share="true"/>
+  </Runtime>
+  <ExtensionPoint Point="PageFlowService.PageFlow" />
+  <ExtensionPoint Point="PageFlowService.PageNode" />
+
+  <Extension Point="PageFlowService.PageFlow">
+    <PageFlow Priority ="50" FirstNode="LoginPage">
+      <PageNode Name="LoginPage" Next="MainPage" />
+      <PageNode Name="MainPage" Next="AppCenterPage" />
+      <PageNode Name="AppCenterPage" />
+    </PageFlow>
+  </Extension>
+
+  <Extension Point="UIShell.BundleManagementOptions">
+    <BundleManagementOption AllowToStarted="true" AllowToStopped="false" AllowToUninstalled="false" />
+  </Extension>
+</Bundle>

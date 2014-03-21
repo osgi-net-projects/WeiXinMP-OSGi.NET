@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Bundle xmlns="urn:uiosp-bundle-manifest-2.0" SymbolicName="UIShell.WeChatProxyPlugin" Name="微信代理插件" Version="1.0.0.0" InitializedState="Active">
+  <Activator Type="UIShell.WeChatProxyPlugin.Activator"/>
+  <Runtime>
+    <Assembly Path="bin\UIShell.WeChatProxyPlugin.dll"/>
+    <Assembly Path="lib\Senparc.Weixin.MP.dll"/>
+    <Dependency BundleSymbolicName="UIShell.PageFlowService" BundleVersion="1.0.0.0" AssemblyName="UIShell.PageFlowService" AssemblyVersion="1.0.0.0" Resolution="Mandatory" />
+    <Dependency BundleSymbolicName="UIShell.ExtensionProviderService" BundleVersion="1.0.0.0" AssemblyName="UIShell.ExtensionProviderService" AssemblyVersion="1.0.0.0" Resolution="Mandatory" />
+  </Runtime>
+
+  <Extension Point="PageFlowService.PageNode">
+    <PageNode Name="AppCenterPage" Priority="50" Value="~/Plugins/UIShell.WeChatProxyPlugin/Default.aspx" />
+  </Extension>
+  
+  <Extension Point="UIShell.BundleManagementOptions">
+    <BundleManagementOption AllowToStarted="true" AllowToStopped="false" AllowToUninstalled="false" />
+  </Extension>
+</Bundle>

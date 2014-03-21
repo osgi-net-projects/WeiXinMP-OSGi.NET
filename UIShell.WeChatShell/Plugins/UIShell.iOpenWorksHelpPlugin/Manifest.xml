@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Bundle xmlns="urn:uiosp-bundle-manifest-2.0" SymbolicName="UIShell.iOpenWorksHelpPlugin" Name="开放工厂小助手插件" Version="1.0.0.0" InitializedState="Active" StartLevel="30">
+  <Activator Type="UIShell.iOpenWorksHelpPlugin.Activator"/>
+  <Runtime>
+    <Assembly Path="bin\UIShell.iOpenWorksHelpPlugin.dll" Share="true"/>
+    <Assembly Path="lib\Senparc.Weixin.MP.dll"/>
+  </Runtime>
+
+  <Extension Point="UIShell.WeChatProxy">
+    <Proxy Name="iOpenWorksHelp" Token="iopenworks_help" Handler="UIShell.iOpenWorksHelpPlugin.CustomMessageHandler.CustomMessageHandler" />
+  </Extension>
+</Bundle>
