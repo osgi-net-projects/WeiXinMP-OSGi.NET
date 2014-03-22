@@ -62,6 +62,9 @@
     <Content Include="ErrorHandler.aspx" />
     <Content Include="FrameworkBusyHandler.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="Plugins\Senparc.Weixin.MP\Manifest.xml" />
+    <Content Include="Plugins\Senparc.Weixin.MP\Senparc.Weixin.MP.dll" />
+    <Content Include="Plugins\Senparc.Weixin.MP\Senparc.Weixin.MP.XML" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

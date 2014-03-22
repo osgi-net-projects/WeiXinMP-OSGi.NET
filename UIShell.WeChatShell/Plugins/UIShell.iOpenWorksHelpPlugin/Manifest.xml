@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Bundle xmlns="urn:uiosp-bundle-manifest-2.0" SymbolicName="UIShell.iOpenWorksHelpPlugin" Name="开放工厂小助手插件" Version="1.0.0.0" InitializedState="Active" StartLevel="30">
+<Bundle xmlns="urn:uiosp-bundle-manifest-2.0" SymbolicName="UIShell.iOpenWorksHelpPlugin" Name="开放工厂小助手全局处理插件" Version="1.0.0.0" InitializedState="Active" StartLevel="30">
   <Activator Type="UIShell.iOpenWorksHelpPlugin.Activator"/>
   <Runtime>
-    <Assembly Path="bin\UIShell.iOpenWorksHelpPlugin.dll" Share="true"/>
-    <Assembly Path="lib\Senparc.Weixin.MP.dll"/>
+    <Assembly Path="bin\UIShell.iOpenWorksHelpPlugin.dll"/>
+    <Dependency BundleSymbolicName="UIShell.ExtensionProviderService" BundleVersion="1.0.0.0" AssemblyName="UIShell.ExtensionProviderService" AssemblyVersion="1.0.0.0" Resolution="Mandatory" />
+    <Dependency BundleSymbolicName="Senparc.Weixin.MPPlugin" BundleVersion="1.0.0.0" AssemblyName="Senparc.Weixin.MP" AssemblyVersion="5.6.4.37485" Resolution="Mandatory" />
   </Runtime>
 
   <Extension Point="UIShell.WeChatProxy">

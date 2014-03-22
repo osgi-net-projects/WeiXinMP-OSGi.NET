@@ -3,9 +3,9 @@
   <Activator Type="UIShell.WeChatProxyPlugin.Activator"/>
   <Runtime>
     <Assembly Path="bin\UIShell.WeChatProxyPlugin.dll"/>
-    <Assembly Path="lib\Senparc.Weixin.MP.dll"/>
     <Dependency BundleSymbolicName="UIShell.PageFlowService" BundleVersion="1.0.0.0" AssemblyName="UIShell.PageFlowService" AssemblyVersion="1.0.0.0" Resolution="Mandatory" />
     <Dependency BundleSymbolicName="UIShell.ExtensionProviderService" BundleVersion="1.0.0.0" AssemblyName="UIShell.ExtensionProviderService" AssemblyVersion="1.0.0.0" Resolution="Mandatory" />
+    <Dependency BundleSymbolicName="Senparc.Weixin.MPPlugin" BundleVersion="1.0.0.0" AssemblyName="Senparc.Weixin.MP" AssemblyVersion="5.6.4.37485" Resolution="Mandatory" />
   </Runtime>
 
   <Extension Point="PageFlowService.PageNode">

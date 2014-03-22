@@ -41,9 +41,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Senparc.Weixin.MP, Version=5.6.4.37485, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\Senparc.Weixin.MP.dll</HintPath>
+    <Reference Include="Senparc.Weixin.MP">
+      <HintPath>..\Senparc.Weixin.MP\Senparc.Weixin.MP.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -62,8 +61,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
-    <Content Include="lib\Senparc.Weixin.MP.dll" />
-    <Content Include="lib\Senparc.Weixin.MP.XML" />
     <Content Include="Manifest.xml">
       <SubType>Designer</SubType>
     </Content>
