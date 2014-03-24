@@ -9,7 +9,7 @@
   </Runtime>
 
   <Extension Point="PageFlowService.PageNode">
-    <PageNode Name="AppCenterPage" Priority="50" Value="~/Plugins/UIShell.WeChatProxyPlugin/Default.aspx" />
+    <PageNode Name="MainPage" Priority="50" Value="~/Plugins/UIShell.WeChatProxyPlugin/Default.aspx" />
   </Extension>
   
   <Extension Point="UIShell.BundleManagementOptions">

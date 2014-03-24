@@ -14,6 +14,7 @@ namespace UIShell.ExtensionProviderService
         public string ExtensionPoint { get; set; }
         public NameValueCollection AttributesCollection { get; set; }
         public IBundle Bundle { get; set; }
+        public ExtensionProviderCollection ChildExtensionProvider { get; set; }
 
         public static void BuildBootstrapLayout(Extension extension, ExtensionProviderCollection extensionProviders)
         {
@@ -30,9 +31,34 @@ namespace UIShell.ExtensionProviderService
                     attributesCollection.Add(attr.Name, attr.Value);
                 }
 
-                ExtensionProvider extensionProvider = new ExtensionProvider { ExtensionPoint = xmlNode.ParentNode.FirstChild.ParentNode.Attributes["Point"].Value, AttributesCollection = attributesCollection, Bundle = extension.Owner };
+                var extensionPoint = xmlNode.ParentNode.FirstChild.ParentNode.Attributes["Point"].Value;
+                ExtensionProvider extensionProvider = new ExtensionProvider { ExtensionPoint = extensionPoint, AttributesCollection = attributesCollection, Bundle = extension.Owner, ChildExtensionProvider = GenerateChildExtensionProvider(xmlNode.ChildNodes, extension, extensionPoint) };
                 extensionProviders.AddExtensionProvider(extensionProvider);
             }
+        }
+
+        private static ExtensionProviderCollection GenerateChildExtensionProvider(XmlNodeList childNodes, Extension extension, string extensionPoint)
+        {
+            ExtensionProviderCollection extensionProviders = new ExtensionProviderCollection();
+
+            foreach (XmlNode xmlNode in childNodes)
+            {
+                if (xmlNode is XmlComment)
+                {
+                    continue;
+                }
+
+                NameValueCollection attributesCollection = new NameValueCollection();
+                foreach (XmlAttribute attr in xmlNode.Attributes)
+                {
+                    attributesCollection.Add(attr.Name, attr.Value);
+                }
+
+                ExtensionProvider extensionProvider = new ExtensionProvider { ExtensionPoint = extensionPoint, AttributesCollection = attributesCollection, Bundle = extension.Owner };
+                extensionProviders.AddExtensionProvider(extensionProvider);
+            }
+
+            return extensionProviders;
         }
 
         public override string ToString()
