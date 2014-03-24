@@ -12,11 +12,22 @@ namespace UIShell.WeChatProxyPlugin
         private const string NAME_ATTRIBUTE = "Name";
         private const string TOKEN_ATTRIBUTE = "Token";
         private const string HANDLER_ATTRIBUTE = "Handler";
+        private List<WeChatProxy> _weChatProxies = new List<WeChatProxy>();
 
-        public List<WeChatProxy> WeChatProxies = new List<WeChatProxy>();
-
-        public WeChatProxyContainer()
+        public List<WeChatProxy> WeChatProxies
         {
+            get
+            {
+                BuildWeChatProxies();
+
+                return _weChatProxies;
+            }
+        }
+
+        private void BuildWeChatProxies()
+        {
+            _weChatProxies = new List<WeChatProxy>();
+
             var extensions = Activator.ExtensionService.GetExtensionProviders(WECHAT_PROXY);
             foreach (var extension in extensions)
             {
@@ -25,34 +36,11 @@ namespace UIShell.WeChatProxyPlugin
                 string hanlder = extension.AttributesCollection[HANDLER_ATTRIBUTE];
                 string symbolicName = extension.Bundle.SymbolicName;
 
-                if (Validate(hanlder, HANDLER_ATTRIBUTE, symbolicName) && Validate(token, TOKEN_ATTRIBUTE, symbolicName))
+                if (Utility.Validate(hanlder, HANDLER_ATTRIBUTE, symbolicName, WECHAT_PROXY) && Utility.Validate(token, TOKEN_ATTRIBUTE, symbolicName, WECHAT_PROXY))
                 {
-                    WeChatProxies.Add(new WeChatProxy() { Name = name, Token = token, Handler = hanlder, Bundle = extension.Bundle });
+                    _weChatProxies.Add(new WeChatProxy() { Name = name, Token = token, Handler = hanlder, Bundle = extension.Bundle });
                 }
             }
-        }
-
-        private bool Validate(string value, string name, string symbolicName)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                FileLogUtility.Error(string.Format("{0} is not specified in bundle {1} for extension point {2} so it's ignored.", name, symbolicName, WECHAT_PROXY));
-
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool Validate(ref string value, string name, string symbolicName, string defaultValue)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                value = defaultValue;
-                FileLogUtility.Error(string.Format("{0} is not specified in bundle {1} for extension point {2} so it's set to default {3}.", name, symbolicName, WECHAT_PROXY, defaultValue));
-            }
-
-            return true;
         }
     }
 }

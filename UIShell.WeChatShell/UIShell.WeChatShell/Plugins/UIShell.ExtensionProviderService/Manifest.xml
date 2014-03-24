@@ -5,6 +5,4 @@
   <Runtime>
     <Assembly Path="bin\UIShell.ExtensionProviderService.dll" Share="true"/>
   </Runtime>
-  
-  <ExtensionPoint Point="UIShell.WeChatProxy" />
 </Bundle>

@@ -54,7 +54,7 @@ namespace UIShell.ExtensionProviderService
                     attributesCollection.Add(attr.Name, attr.Value);
                 }
 
-                ExtensionProvider extensionProvider = new ExtensionProvider { ExtensionPoint = extensionPoint, AttributesCollection = attributesCollection, Bundle = extension.Owner };
+                ExtensionProvider extensionProvider = new ExtensionProvider { ExtensionPoint = extensionPoint, AttributesCollection = attributesCollection, Bundle = extension.Owner, ChildExtensionProvider = GenerateChildExtensionProvider(xmlNode.ChildNodes, extension, extensionPoint) };
                 extensionProviders.AddExtensionProvider(extensionProvider);
             }
 

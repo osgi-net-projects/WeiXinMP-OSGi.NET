@@ -75,7 +75,11 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="MenuButton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility.cs" />
+    <Compile Include="WeChatMenu.cs" />
+    <Compile Include="WeChatMenuContainer.cs" />
     <Compile Include="WeChatProxy.cs" />
     <Compile Include="WeChatProxyContainer.cs" />
   </ItemGroup>

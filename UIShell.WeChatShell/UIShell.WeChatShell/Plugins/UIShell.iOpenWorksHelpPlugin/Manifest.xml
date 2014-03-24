@@ -10,4 +10,16 @@
   <Extension Point="UIShell.WeChatProxy">
     <Proxy Name="iOpenWorksHelp" Token="iopenworks_help" Handler="UIShell.iOpenWorksHelpPlugin.CustomMessageHandler.CustomMessageHandler" />
   </Extension>
+
+  <Extension Point="UIShell.WeChatMenu">
+    <Menu Name="iOpenWorksHelp" AppId="wx47855170e43324bb" Secret="de48b1d425917c5c83a085ff691b7e14">
+      <Button Type="Click" Name="今日歌曲" Key="V1001_TODAY_MUSIC" />
+      <Button Type="Click" Name="歌手简介" Key="V1001_TODAY_SINGER" />
+      <Button Name="菜单">
+        <Button Type="View" Name="搜索" Url="http://www.soso.com/" />
+        <Button Type="View" Name="视频" Url="http://v.qq.com/" />
+        <Button Type="Click" Name="赞一下我们" Key="V1001_GOOD" />
+      </Button>
+    </Menu>
+  </Extension>
 </Bundle>

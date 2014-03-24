@@ -15,4 +15,7 @@
   <Extension Point="UIShell.BundleManagementOptions">
     <BundleManagementOption AllowToStarted="true" AllowToStopped="false" AllowToUninstalled="false" />
   </Extension>
+  
+  <ExtensionPoint Point="UIShell.WeChatProxy" />
+  <ExtensionPoint Point="UIShell.WeChatMenu" />
 </Bundle>
