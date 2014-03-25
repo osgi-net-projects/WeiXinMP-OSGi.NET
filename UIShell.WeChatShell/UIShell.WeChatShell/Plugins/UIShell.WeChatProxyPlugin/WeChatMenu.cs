@@ -14,10 +14,4 @@ namespace UIShell.WeChatProxyPlugin
         public List<MenuButton> MenuButtons { set; get; }
         public IBundle Bundle { set; get; }
     }
-
-    public enum MenuType
-    {
-        Click,
-        View
-    }
 }

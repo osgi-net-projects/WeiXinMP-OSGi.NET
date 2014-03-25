@@ -2,5 +2,6 @@
 <Bundle SymbolicName="Senparc.Weixin.MPPlugin" Name="微信公众平台SDK" Version="1.0.0.0" InitializedState="Active" xmlns="urn:uiosp-bundle-manifest-2.0">
   <Runtime>
     <Assembly Path="Senparc.Weixin.MP.dll" Share="true" MultipleVersions="false" />
+	<Assembly Path="Newtonsoft.Json.dll" Share="true" MultipleVersions="false" />
   </Runtime>
 </Bundle>

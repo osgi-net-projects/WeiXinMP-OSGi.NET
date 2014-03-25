@@ -62,8 +62,8 @@ namespace UIShell.WeChatProxyPlugin
                     {
                         if (Utility.Validate(type, TYPE_ATTRIBUTE, symbolicName, WECHAT_MENU))
                         {
-                            var buttonType = MenuType.Click;
-                            if (!Enum.TryParse<MenuType>(type, out buttonType))
+                            var buttonType = ButtonType.Click;
+                            if (!Enum.TryParse<ButtonType>(type, out buttonType))
                             {
                                 Utility.NotInCorrectFormat(TYPE_ATTRIBUTE, symbolicName, WECHAT_MENU);
                                 continue;
@@ -72,14 +72,14 @@ namespace UIShell.WeChatProxyPlugin
                             string key = val.AttributesCollection[KEY_ATTRIBUTE];
                             string url = val.AttributesCollection[URL_ATTRIBUTE];
 
-                            if ((buttonType == MenuType.Click && Utility.Validate(key, KEY_ATTRIBUTE, symbolicName, WECHAT_MENU)) || (buttonType == MenuType.View && Utility.Validate(url, URL_ATTRIBUTE, symbolicName, WECHAT_MENU)))
+                            if ((buttonType == ButtonType.Click && Utility.Validate(key, KEY_ATTRIBUTE, symbolicName, WECHAT_MENU)) || (buttonType == ButtonType.View && Utility.Validate(url, URL_ATTRIBUTE, symbolicName, WECHAT_MENU)))
                             {
                                 buttons.Add(new MenuButton() { Name = name, Type = buttonType, Key = key, Url = url, MenuSubButtons = GenerateMenuButtons(val.ChildExtensionProvider, symbolicName) });
                             }
                         }
                         else
                         {
-                            buttons.Add(new MenuButton() { Name = name, MenuSubButtons = GenerateMenuButtons(val.ChildExtensionProvider, symbolicName) });
+                            buttons.Add(new MenuButton() { Name = name, Type = ButtonType.SubButton, MenuSubButtons = GenerateMenuButtons(val.ChildExtensionProvider, symbolicName) });
                         }
                     }
                 }

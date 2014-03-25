@@ -12,6 +12,11 @@ using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Senparc.Weixin.MP.MessageHandlers;
 using Senparc.Weixin.MP.Context;
+using Senparc.Weixin.MP.CommonAPIs;
+using Newtonsoft;
+using Senparc.Weixin.MP.Entities;
+using Senparc.Weixin.MP.Entities.Menu;
+using System.Collections.Generic;
 
 namespace UIShell.WeChatProxyPlugin
 {
@@ -23,6 +28,82 @@ namespace UIShell.WeChatProxyPlugin
             string timestamp = Request["timestamp"];
             string nonce = Request["nonce"];
             string echostr = Request["echostr"];
+
+            string updateMenu = Request["updatemenu"];
+
+            if (!string.IsNullOrWhiteSpace(updateMenu))
+            {
+                foreach (var menu in Activator.WeChatMenuContainer.WeChatMenus)
+                {
+                    try
+                    {
+                        if (!AccessTokenContainer.CheckRegistered(menu.AppId))
+                        {
+                            AccessTokenContainer.Register(menu.AppId, menu.Secret);
+                        }
+                        var tokenRes = AccessTokenContainer.GetTokenResult(menu.AppId); //CommonAPIs.CommonApi.GetToken(appId, appSecret);
+                        WriteContent(string.Format("获取到 token 为：{0}, 有效时间为 {1} 秒。", tokenRes.access_token, tokenRes.expires_in));
+
+                        //var menuRes = CommonApi.GetMenu(tokenRes.access_token);
+
+                        try
+                        {
+                            //重新整理按钮信息
+                            ButtonGroup bg = new ButtonGroup();
+                            foreach (var menuButton in menu.MenuButtons)
+                            {
+                                BaseButton but = null;
+                                switch (menuButton.Type)
+                                {
+                                    case ButtonType.Click:
+                                        but = new SingleClickButton() { name = menuButton.Name, key = menuButton.Key, type = "click" };
+                                        break;
+                                    case ButtonType.View:
+                                        but = new SingleViewButton() { name = menuButton.Name, url = menuButton.Url, type = "view" };
+                                        break;
+                                    case ButtonType.SubButton:
+                                        List<SingleButton> subButtons = new List<SingleButton>();
+                                        
+                                        foreach (var subBut in menuButton.MenuSubButtons)
+                                        {
+                                            SingleButton singleBut = null;
+                                            switch (subBut.Type)
+                                            {
+                                                case ButtonType.Click:
+                                                    singleBut = new SingleClickButton() { name = subBut.Name, key = subBut.Key, type = "click" };
+                                                    break;
+                                                case ButtonType.View:
+                                                    singleBut = new SingleViewButton() { name = subBut.Name, url = subBut.Url, type = "view" };
+                                                    break;
+                                            }
+
+                                            if (singleBut != null)
+                                                subButtons.Add(singleBut);
+                                        }
+
+                                        but = new SubButton() { name = menuButton.Name, sub_button = subButtons };
+                                        break;
+                                }
+
+                                if (but != null)
+                                    bg.button.Add(but);
+                            }
+
+                            var result = CommonApi.CreateMenu(tokenRes.access_token, bg);
+                            WriteContent(string.Format("创建结果信息：{0}, 返回值 {1} （{2}）。", result.errmsg, (int)result.errcode, result.errcode.ToString()));
+                        }
+                        catch
+                        {
+                            WriteContent("创建菜单失败！");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        //TODO:为简化代码，这里不处理异常（如Token过期）
+                        WriteContent("执行过程发生错误！");
+                    }
+                }
+            }
 
             foreach (var proxy in Activator.WeChatProxyContainer.WeChatProxies)
             {
