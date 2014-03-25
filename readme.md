@@ -17,9 +17,13 @@ OSGi.NET： http://www.iopenworks.com/
 
 非常感谢原作者的努力和无私贡献！
 
+运行 OSGi.NET 需要安装 iOpenWorks SDK，可从这里下载安装 http://iopenworks.com/Products/SDKDownload （程序的 bin 目录已经带有所需 dll，也可以自行更改引用）。
+
 
 使用方法
 ---------
+
+1、如何通过基础接口，使得公众号能够接收用户消息，并按照自己的需要向其回复消息？
 
 可参考 UIShell.WeChatShell\Plugins\UIShell.iOpenWorksHelpPlugin 的实例
 
@@ -35,9 +39,13 @@ Manifest.xml
 	......
 ```
 
-Token 则为微信的 Token 值
+Token 则为服务器配置用于接收用户信息的 Token 值
 
-CustomMessageHandler 继承自 MessageHandler<CustomMessageContext>，其中 CustomMessageContext 继承自 MessageContext， CustomMessageHandler 和 CustomMessageHandler_Events 中加入相应的业务逻辑即可。
+CustomMessageHandler（以及CustomMessageHandler_Events） 则为实际的处理逻辑模块。CustomMessageHandler 继承自 MessageHandler<CustomMessageContext>，其中 CustomMessageContext 继承自 MessageContext。
+
+2、如何添加公众号底部的自定义菜单？
+
+可参考 UIShell.WeChatShell\Plugins\UIShell.iOpenWorksHelpPlugin 的实例
 
 Manifest.xml
 
@@ -59,6 +67,6 @@ Manifest.xml
 	......
 ```
 
-将 AppId 和 Secret 替换为自己的，然后根据需要编辑下面的 Button 节点定义，注意格式是否正确，并在首页传递参数 updatemenu，例如 updatemenu=1，完整 URL 如 http://localhost/?updatemenu=1，可实现自动更新 Menu。
+将 AppId 和 Secret 替换为自己的，然后根据需要编辑下面的 Button 节点定义，注意格式是否正确，并在首页传递参数 updatemenu，例如 updatemenu=1，完整 URL 如 http://localhost/?updatemenu=1，可实现自动更新菜单。
 
-更多关于 OSGi.NET 的用法请参考官网帮助文档： http://www.iopenworks.com/Documents/DocumentsList
+更多关于 OSGi.NET 的用法请参考官网帮助文档： http://www.iopenworks.com/Documents/DocumentsList，或加入群 
