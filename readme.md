@@ -69,4 +69,4 @@ Manifest.xml
 
 将 AppId 和 Secret 替换为自己的，然后根据需要编辑下面的 Button 节点定义，注意格式是否正确，并在首页传递参数 updatemenu，例如 updatemenu=1，完整 URL 如 http://localhost/?updatemenu=1，可实现自动更新菜单。
 
-更多关于 OSGi.NET 的用法请参考官网帮助文档： http://www.iopenworks.com/Documents/DocumentsList，或加入群 
+更多关于 OSGi.NET 的用法请参考官网帮助文档： http://www.iopenworks.com/Documents/DocumentsList 
