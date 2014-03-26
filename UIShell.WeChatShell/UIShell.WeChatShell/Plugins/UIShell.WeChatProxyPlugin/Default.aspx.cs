@@ -63,7 +63,7 @@ namespace UIShell.WeChatProxyPlugin
                                         break;
                                     case ButtonType.SubButton:
                                         List<SingleButton> subButtons = new List<SingleButton>();
-                                        
+
                                         foreach (var subBut in menuButton.MenuSubButtons)
                                         {
                                             SingleButton singleBut = null;
@@ -140,7 +140,7 @@ namespace UIShell.WeChatProxyPlugin
                     //var messageHandler = new CustomMessageHandler(Request.InputStream, maxRecordCount);
 
                     Type type = proxy.Bundle.LoadClass(proxy.Handler);
-                    var parameters = new object[] { Request.InputStream, maxRecordCount };
+                    var parameters = new object[] { Request.InputStream, proxy.AppId, proxy.Secret, maxRecordCount };
                     var messageHandler = System.Activator.CreateInstance(type, parameters) as IMessageHandler;
 
                     try

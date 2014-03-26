@@ -8,6 +8,7 @@ using Senparc.Weixin.MP.Context;
 using Senparc.Weixin.MP.Entities;
 using Senparc.Weixin.MP.MessageHandlers;
 using Senparc.Weixin.MP.Helpers;
+using Senparc.Weixin.MP.CommonAPIs;
 
 namespace UIShell.iOpenWorksHelpPlugin.CustomMessageHandler
 {
@@ -23,6 +24,7 @@ namespace UIShell.iOpenWorksHelpPlugin.CustomMessageHandler
          * 其中所有原OnXX的抽象方法已经都改为虚方法，可以不必每个都重写。若不重写，默认返回DefaultResponseMessage方法中的结果。
          */
 
+        private AccessTokenResult _tokenRes = null;
 
 #if DEBUG
         string agentUrl = "http://localhost:12222/App/Weixin/4";
@@ -35,12 +37,18 @@ namespace UIShell.iOpenWorksHelpPlugin.CustomMessageHandler
         private string souideaKey = WebConfigurationManager.AppSettings["WeixinAgentWeiweihiKey"];//SouideaKey专门用于对接www.souidea.com平台，获取方式见：http://www.souidea.com/ApiDocuments/Item/25#51
 #endif
 
-        public CustomMessageHandler(Stream inputStream, int maxRecordCount = 0)
+        public CustomMessageHandler(Stream inputStream, string appid, string secrect, int maxRecordCount = 0)
             : base(inputStream, maxRecordCount)
         {
             //这里设置仅用于测试，实际开发可以在外部更全局的地方设置，
             //比如MessageHandler<MessageContext>.GlobalWeixinContext.ExpireMinutes = 3。
             WeixinContext.ExpireMinutes = 3;
+
+            if (!AccessTokenContainer.CheckRegistered(appid))
+            {
+                AccessTokenContainer.Register(appid, secrect);
+            }
+            _tokenRes = AccessTokenContainer.GetTokenResult(appid); //CommonAPIs.CommonApi.GetToken(appId, appSecret);
         }
 
         public override void OnExecuting()
@@ -133,8 +141,9 @@ namespace UIShell.iOpenWorksHelpPlugin.CustomMessageHandler
             }
             else
             {
+                var userInfo = CommonApi.GetUserInfo(_tokenRes.access_token, requestMessage.FromUserName);
                 var result = new StringBuilder();
-                result.AppendFormat("您刚才发送了文字信息：{0}\r\n\r\n", requestMessage.Content);
+                result.AppendFormat("您刚才发送了文字信息：{0},微信昵称是：{1}，来自：{2} {3} {4}，性别:{5}，最后一次关注时间为{6}\r\n\r\n", requestMessage.Content, userInfo.nickname, userInfo.country, userInfo.province, userInfo.city, userInfo.sex == 0 ? "未知" : (userInfo.sex == 1) ? "男" : "女", GetTime(userInfo.subscribe_time).ToString());
 
                 if (CurrentMessageContext.RequestMessages.Count > 1)
                 {
@@ -160,6 +169,18 @@ namespace UIShell.iOpenWorksHelpPlugin.CustomMessageHandler
                 responseMessage.Content = result.ToString();
             }
             return responseMessage;
+        }
+
+        /// <summary>
+        /// 时间戳转为C#格式时间
+        /// </summary>
+        /// <param name="timeStamp">Unix时间戳格式</param>
+        /// <returns>C#格式时间</returns>
+        public static DateTime GetTime(long lTime)
+        {
+            DateTime dtStart = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1, 0, 0, 0, 0));
+            dtStart = dtStart.AddSeconds(lTime);
+            return dtStart;
         }
 
         /// <summary>

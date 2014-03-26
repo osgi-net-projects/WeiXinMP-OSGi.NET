@@ -11,6 +11,8 @@ namespace UIShell.WeChatProxyPlugin
         public string Name { set; get; }
         public string Token { set; get; }
         public string Handler { set; get; }
+        public string AppId { set; get; }
+        public string Secret { set; get; }
         public IBundle Bundle { set; get; }
     }
 }

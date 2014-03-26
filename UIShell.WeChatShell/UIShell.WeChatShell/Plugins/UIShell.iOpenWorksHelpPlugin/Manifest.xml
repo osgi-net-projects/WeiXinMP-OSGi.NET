@@ -8,7 +8,7 @@
   </Runtime>
 
   <Extension Point="UIShell.WeChatProxy">
-    <Proxy Name="iOpenWorksHelp" Token="iopenworks_help" Handler="UIShell.iOpenWorksHelpPlugin.CustomMessageHandler.CustomMessageHandler" />
+    <Proxy Name="iOpenWorksHelp" Token="iopenworks_help" Handler="UIShell.iOpenWorksHelpPlugin.CustomMessageHandler.CustomMessageHandler" AppId="YOUR_APPID" Secret="YOUR_SECRET"/>
   </Extension>
 
   <Extension Point="UIShell.WeChatMenu">
