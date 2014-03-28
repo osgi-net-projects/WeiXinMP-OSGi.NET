@@ -33,7 +33,9 @@ Manifest.xml
 	......
 	
 	<Extension Point="UIShell.WeChatProxy">
-		<Proxy Name="iOpenWorksHelp" Token="iopenworks_help" Handler="UIShell.iOpenWorksHelpPlugin.CustomMessageHandler.CustomMessageHandler" />
+		<Proxy Name="iOpenWorksHelp" Token="iopenworks_help" 
+		Handler="UIShell.iOpenWorksHelpPlugin.CustomMessageHandler.CustomMessageHandler" 
+		AppId="YOUR_APPID" Secret="YOUR_SECRET"/>
 	</Extension>
 
 	......
@@ -42,6 +44,8 @@ Manifest.xml
 Token 则为服务器配置用于接收用户信息的 Token 值
 
 CustomMessageHandler（以及CustomMessageHandler_Events） 则为实际的处理逻辑模块。CustomMessageHandler 继承自 MessageHandler<CustomMessageContext>，其中 CustomMessageContext 继承自 MessageContext。
+
+将 AppId 和 Secret 替换为自己的。
 
 2、如何添加公众号底部的自定义菜单？
 

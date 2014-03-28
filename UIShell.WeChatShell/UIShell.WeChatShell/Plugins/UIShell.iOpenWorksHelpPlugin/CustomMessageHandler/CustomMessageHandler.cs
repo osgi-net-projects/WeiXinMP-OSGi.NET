@@ -9,6 +9,7 @@ using Senparc.Weixin.MP.Entities;
 using Senparc.Weixin.MP.MessageHandlers;
 using Senparc.Weixin.MP.Helpers;
 using Senparc.Weixin.MP.CommonAPIs;
+using UIShell.OSGi.Utility;
 
 namespace UIShell.iOpenWorksHelpPlugin.CustomMessageHandler
 {
@@ -48,7 +49,15 @@ namespace UIShell.iOpenWorksHelpPlugin.CustomMessageHandler
             {
                 AccessTokenContainer.Register(appid, secrect);
             }
-            _tokenRes = AccessTokenContainer.GetTokenResult(appid); //CommonAPIs.CommonApi.GetToken(appId, appSecret);
+
+            try
+            {
+                _tokenRes = AccessTokenContainer.GetTokenResult(appid); //CommonAPIs.CommonApi.GetToken(appId, appSecret);
+            }
+            catch
+            {
+                FileLogUtility.Inform(string.Format("获取到 token 失败， appid: {0}，secret: {1}。", appid, secrect));
+            }
         }
 
         public override void OnExecuting()
@@ -141,9 +150,14 @@ namespace UIShell.iOpenWorksHelpPlugin.CustomMessageHandler
             }
             else
             {
-                var userInfo = CommonApi.GetUserInfo(_tokenRes.access_token, requestMessage.FromUserName);
                 var result = new StringBuilder();
-                result.AppendFormat("您刚才发送了文字信息：{0},微信昵称是：{1}，来自：{2} {3} {4}，性别:{5}，最后一次关注时间为{6}\r\n\r\n", requestMessage.Content, userInfo.nickname, userInfo.country, userInfo.province, userInfo.city, userInfo.sex == 0 ? "未知" : (userInfo.sex == 1) ? "男" : "女", GetTime(userInfo.subscribe_time).ToString());
+                result.AppendFormat("您刚才发送了文字信息：{0}\r\n\r\n", requestMessage.Content);
+                if (_tokenRes != null)
+                {
+                    var userInfo = CommonApi.GetUserInfo(_tokenRes.access_token, requestMessage.FromUserName);
+
+                    result.AppendFormat("微信昵称是：{0}，来自：{1} {2} {3}，性别:{4}，最后一次关注时间为{5}\r\n\r\n", userInfo.nickname, userInfo.country, userInfo.province, userInfo.city, userInfo.sex == 0 ? "未知" : (userInfo.sex == 1) ? "男" : "女", GetTime(userInfo.subscribe_time).ToString());
+                }
 
                 if (CurrentMessageContext.RequestMessages.Count > 1)
                 {

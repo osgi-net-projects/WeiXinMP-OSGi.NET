@@ -17,6 +17,7 @@ using Newtonsoft;
 using Senparc.Weixin.MP.Entities;
 using Senparc.Weixin.MP.Entities.Menu;
 using System.Collections.Generic;
+using System.Text;
 
 namespace UIShell.WeChatProxyPlugin
 {
@@ -28,6 +29,13 @@ namespace UIShell.WeChatProxyPlugin
             string timestamp = Request["timestamp"];
             string nonce = Request["nonce"];
             string echostr = Request["echostr"];
+
+            string inputXml = string.Empty;
+            using (StreamReader sr = new StreamReader(Request.InputStream))
+            {
+                inputXml = sr.ReadToEnd();
+                inputXml = HttpUtility.UrlDecode(inputXml);
+            }
 
             string updateMenu = Request["updatemenu"];
 
@@ -41,56 +49,68 @@ namespace UIShell.WeChatProxyPlugin
                         {
                             AccessTokenContainer.Register(menu.AppId, menu.Secret);
                         }
-                        var tokenRes = AccessTokenContainer.GetTokenResult(menu.AppId); //CommonAPIs.CommonApi.GetToken(appId, appSecret);
-                        WriteContent(string.Format("获取到 token 为：{0}, 有效时间为 {1} 秒。", tokenRes.access_token, tokenRes.expires_in));
 
-                        //var menuRes = CommonApi.GetMenu(tokenRes.access_token);
+                        AccessTokenResult tokenRes = null;
+                        try
+                        {
+                            tokenRes = AccessTokenContainer.GetTokenResult(menu.AppId); //CommonAPIs.CommonApi.GetToken(appId, appSecret);
+                            WriteContent(string.Format("获取到 token 为：{0}, 有效时间为 {1} 秒。", tokenRes.access_token, tokenRes.expires_in));
+
+                            //var menuRes = CommonApi.GetMenu(tokenRes.access_token);
+                        }
+                        catch
+                        {
+                            WriteContent(string.Format("获取到 token 失败， appid: {0}，secret: {1}。", menu.AppId, menu.Secret));
+                        }
 
                         try
                         {
-                            //重新整理按钮信息
-                            ButtonGroup bg = new ButtonGroup();
-                            foreach (var menuButton in menu.MenuButtons)
+                            if (tokenRes != null)
                             {
-                                BaseButton but = null;
-                                switch (menuButton.Type)
+                                //重新整理按钮信息
+                                ButtonGroup bg = new ButtonGroup();
+                                foreach (var menuButton in menu.MenuButtons)
                                 {
-                                    case ButtonType.Click:
-                                        but = new SingleClickButton() { name = menuButton.Name, key = menuButton.Key, type = "click" };
-                                        break;
-                                    case ButtonType.View:
-                                        but = new SingleViewButton() { name = menuButton.Name, url = menuButton.Url, type = "view" };
-                                        break;
-                                    case ButtonType.SubButton:
-                                        List<SingleButton> subButtons = new List<SingleButton>();
+                                    BaseButton but = null;
+                                    switch (menuButton.Type)
+                                    {
+                                        case ButtonType.Click:
+                                            but = new SingleClickButton() { name = menuButton.Name, key = menuButton.Key, type = "click" };
+                                            break;
+                                        case ButtonType.View:
+                                            but = new SingleViewButton() { name = menuButton.Name, url = menuButton.Url, type = "view" };
+                                            break;
+                                        case ButtonType.SubButton:
+                                            List<SingleButton> subButtons = new List<SingleButton>();
 
-                                        foreach (var subBut in menuButton.MenuSubButtons)
-                                        {
-                                            SingleButton singleBut = null;
-                                            switch (subBut.Type)
+                                            foreach (var subBut in menuButton.MenuSubButtons)
                                             {
-                                                case ButtonType.Click:
-                                                    singleBut = new SingleClickButton() { name = subBut.Name, key = subBut.Key, type = "click" };
-                                                    break;
-                                                case ButtonType.View:
-                                                    singleBut = new SingleViewButton() { name = subBut.Name, url = subBut.Url, type = "view" };
-                                                    break;
+                                                SingleButton singleBut = null;
+                                                switch (subBut.Type)
+                                                {
+                                                    case ButtonType.Click:
+                                                        singleBut = new SingleClickButton() { name = subBut.Name, key = subBut.Key, type = "click" };
+                                                        break;
+                                                    case ButtonType.View:
+                                                        singleBut = new SingleViewButton() { name = subBut.Name, url = subBut.Url, type = "view" };
+                                                        break;
+                                                }
+
+                                                if (singleBut != null)
+                                                    subButtons.Add(singleBut);
                                             }
 
-                                            if (singleBut != null)
-                                                subButtons.Add(singleBut);
-                                        }
+                                            but = new SubButton() { name = menuButton.Name, sub_button = subButtons };
+                                            break;
+                                    }
 
-                                        but = new SubButton() { name = menuButton.Name, sub_button = subButtons };
-                                        break;
+                                    if (but != null)
+                                        bg.button.Add(but);
                                 }
 
-                                if (but != null)
-                                    bg.button.Add(but);
+                                var result = CommonApi.CreateMenu(tokenRes.access_token, bg);
+                                WriteContent(string.Format("创建结果信息：{0}, 返回值 {1} （{2}）。", result.errmsg, (int)result.errcode, result.errcode.ToString()));
                             }
-
-                            var result = CommonApi.CreateMenu(tokenRes.access_token, bg);
-                            WriteContent(string.Format("创建结果信息：{0}, 返回值 {1} （{2}）。", result.errmsg, (int)result.errcode, result.errcode.ToString()));
                         }
                         catch
                         {
@@ -122,7 +142,7 @@ namespace UIShell.WeChatProxyPlugin
                                     "如果你在浏览器中看到这句话，说明此地址可以被作为微信公众账号后台的Url，请注意保持Token一致。");
                     }
 
-                    Response.End();
+                    continue;
                 }
                 else
                 {
@@ -130,7 +150,7 @@ namespace UIShell.WeChatProxyPlugin
                     if (!CheckSignature.Check(signature, timestamp, nonce, token))
                     {
                         WriteContent("参数错误！");
-                        return;
+                        continue;
                     }
 
                     //v4.2.2之后的版本，可以设置每个人上下文消息储存的最大数量，防止内存占用过多，如果该参数小于等于0，则不限制
@@ -139,9 +159,13 @@ namespace UIShell.WeChatProxyPlugin
                     //自定义MessageHandler，对微信请求的详细判断操作都在这里面。
                     //var messageHandler = new CustomMessageHandler(Request.InputStream, maxRecordCount);
 
-                    Type type = proxy.Bundle.LoadClass(proxy.Handler);
-                    var parameters = new object[] { Request.InputStream, proxy.AppId, proxy.Secret, maxRecordCount };
-                    var messageHandler = System.Activator.CreateInstance(type, parameters) as IMessageHandler;
+                    IMessageHandler messageHandler = null;
+                    using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(inputXml)))
+                    {
+                        Type type = proxy.Bundle.LoadClass(proxy.Handler);
+                        var parameters = new object[] { stream, proxy.AppId, proxy.Secret, maxRecordCount };
+                        messageHandler = System.Activator.CreateInstance(type, parameters) as IMessageHandler;
+                    }
 
                     try
                     {
@@ -159,7 +183,7 @@ namespace UIShell.WeChatProxyPlugin
                                                messageHandler.ResponseMessage.ToUserName + ".txt"));
                             WriteContent(messageHandler.ResponseDocument.ToString());
 
-                            return;
+                            continue;
                         }
                     }
                     catch (Exception ex)
@@ -180,12 +204,10 @@ namespace UIShell.WeChatProxyPlugin
 
                         WriteContent("");
                     }
-                    finally
-                    {
-                        Response.End();
-                    }
                 }
             }
+
+            Response.End();
         }
 
         private void WriteContent(string str)
