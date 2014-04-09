@@ -135,14 +135,16 @@ namespace UIShell.WeChatProxyPlugin
                     if (CheckSignature.Check(signature, timestamp, nonce, token))
                     {
                         WriteContent(echostr); //返回随机字符串则表示验证通过
+                        //如果有多个相同的Token，则第一个验证通过就返回
+                        break;
                     }
                     else
                     {
-                        WriteContent("failed:" + signature + "," + CheckSignature.GetSignature(timestamp, nonce, token) + "。" +
-                                    "如果你在浏览器中看到这句话，说明此地址可以被作为微信公众账号后台的Url，请注意保持Token一致。");
+                        //WriteContent("failed:" + signature + "," + CheckSignature.GetSignature(timestamp, nonce, token) + "。" +
+                        //            "如果你在浏览器中看到这句话，说明此地址可以被作为微信公众账号后台的Url，请注意保持Token一致。");
+                        //如果失败应该不返回任何东西，以便循环校验下一个Token
+                        continue;
                     }
-
-                    continue;
                 }
                 else
                 {
@@ -163,7 +165,7 @@ namespace UIShell.WeChatProxyPlugin
                     using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(inputXml)))
                     {
                         Type type = proxy.Bundle.LoadClass(proxy.Handler);
-                        var parameters = new object[] { stream, proxy.AppId, proxy.Secret, maxRecordCount };
+                        var parameters = new object[] { stream, token, proxy.AppId, proxy.Secret, maxRecordCount };
                         messageHandler = System.Activator.CreateInstance(type, parameters) as IMessageHandler;
                     }
 

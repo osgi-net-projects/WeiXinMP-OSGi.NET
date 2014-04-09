@@ -38,7 +38,7 @@ namespace UIShell.iOpenWorksHelpPlugin.CustomMessageHandler
         private string souideaKey = WebConfigurationManager.AppSettings["WeixinAgentWeiweihiKey"];//SouideaKey专门用于对接www.souidea.com平台，获取方式见：http://www.souidea.com/ApiDocuments/Item/25#51
 #endif
 
-        public CustomMessageHandler(Stream inputStream, string appid, string secrect, int maxRecordCount = 0)
+        public CustomMessageHandler(Stream inputStream, string token, string appid, string secrect, int maxRecordCount = 0)
             : base(inputStream, maxRecordCount)
         {
             //这里设置仅用于测试，实际开发可以在外部更全局的地方设置，
