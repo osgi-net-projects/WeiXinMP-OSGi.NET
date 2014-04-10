@@ -13,7 +13,6 @@ UIShell.WeChatShell/UIShell.WeChatShell/bin/UIShell.WeChatShell.dll
 UIShell.WeChatShell/UIShell.WeChatShell/Plugins/UIShell.ExtensionProviderService/bin/UIShell.ExtensionProviderService.dll
 UIShell.WeChatShell/UIShell.WeChatShell/Plugins/UIShell.iOpenWorksHelpPlugin/bin/UIShell.iOpenWorksHelpPlugin.dll
 UIShell.WeChatShell/UIShell.WeChatShell/Plugins/UIShell.WeChatProxyPlugin/bin/UIShell.WeChatProxyPlugin.dll
-UIShell.WeChatShell/UIShell.WeChatShell/Plugins/UIShell.WeChatStorePlugin/
 
 #OSGi.NET files
 log.txt

@@ -80,6 +80,8 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Impl\WeChatProxyService.cs" />
+    <Compile Include="IWeChatProxyService.cs" />
     <Compile Include="MenuButton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility.cs" />

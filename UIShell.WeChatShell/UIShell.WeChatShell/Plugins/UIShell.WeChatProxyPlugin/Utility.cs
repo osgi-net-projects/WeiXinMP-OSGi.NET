@@ -12,7 +12,7 @@ namespace UIShell.WeChatProxyPlugin
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                FileLogUtility.Error(string.Format("{0} is not specified in bundle {1} for extension point {2} so it's ignored.", name, symbolicName, extensionPoint));
+                FileLogUtility.Error(string.Format("{0} is not specified or not in correct format in bundle {1} for extension point {2} so it's or part of it's ignored.", name, symbolicName, extensionPoint));
 
                 return false;
             }

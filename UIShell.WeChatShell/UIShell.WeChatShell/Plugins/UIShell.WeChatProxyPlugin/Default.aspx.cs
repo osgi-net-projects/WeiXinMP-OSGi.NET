@@ -165,7 +165,7 @@ namespace UIShell.WeChatProxyPlugin
                     using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(inputXml)))
                     {
                         Type type = proxy.Bundle.LoadClass(proxy.Handler);
-                        var parameters = new object[] { stream, token, proxy.AppId, proxy.Secret, maxRecordCount };
+                        var parameters = new object[] { stream, token, proxy.AppID, proxy.Secret, maxRecordCount };
                         messageHandler = System.Activator.CreateInstance(type, parameters) as IMessageHandler;
                     }
 
