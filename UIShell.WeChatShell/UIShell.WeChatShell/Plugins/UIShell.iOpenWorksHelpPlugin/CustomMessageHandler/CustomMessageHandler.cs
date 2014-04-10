@@ -45,13 +45,13 @@ namespace UIShell.iOpenWorksHelpPlugin.CustomMessageHandler
             //比如MessageHandler<MessageContext>.GlobalWeixinContext.ExpireMinutes = 3。
             WeixinContext.ExpireMinutes = 3;
 
-            if (!AccessTokenContainer.CheckRegistered(appid))
-            {
-                AccessTokenContainer.Register(appid, secrect);
-            }
-
             try
             {
+                if (!AccessTokenContainer.CheckRegistered(appid))
+                {
+                    AccessTokenContainer.Register(appid, secrect);
+                }
+
                 _tokenRes = AccessTokenContainer.GetTokenResult(appid); //CommonAPIs.CommonApi.GetToken(appId, appSecret);
             }
             catch

@@ -49,7 +49,12 @@ namespace UIShell.WeChatProxyPlugin
                 {
                     if (Utility.Validate(hanlder, HANDLER_ATTRIBUTE, symbolicName, WECHAT_PROXY) && Utility.Validate(token, TOKEN_ATTRIBUTE, symbolicName, WECHAT_PROXY))
                     {
-                        _weChatProxies.Add(new WeChatProxy() { Name = name, Token = token, Handler = hanlder, Bundle = extension.Bundle, AppID = appid, Secret = secret });
+                        var item = _weChatProxies.Where(i => i.Token == token).FirstOrDefault();
+
+                        if (item == null)
+                            _weChatProxies.Add(new WeChatProxy() { Name = name, Token = token, Handler = hanlder, Bundle = extension.Bundle, AppID = appid, Secret = secret });
+                        else
+                            FileLogUtility.Error(string.Format("{0} provides the same Token {1} that has been registered for extension point {2} so it's ignored.", symbolicName, token, WECHAT_PROXY));
                     }
                 }
             }

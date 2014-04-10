@@ -13,10 +13,15 @@ namespace UIShell.WeChatProxyPlugin.Impl
         {
             if (!string.IsNullOrEmpty(hanlder) && !string.IsNullOrEmpty(token))
             {
-                Activator.WeChatProxyContainer.ServiceWeChatProxies.Add(new WeChatProxy() { Name = name, Token = token, Handler = hanlder, Bundle = bundle, AppID = appid, Secret = secret });
+                var item = Activator.WeChatProxyContainer.WeChatProxies.Where(i => i.Token == token).FirstOrDefault();
+
+                if (item == null)
+                    Activator.WeChatProxyContainer.ServiceWeChatProxies.Add(new WeChatProxy() { Name = name, Token = token, Handler = hanlder, Bundle = bundle, AppID = appid, Secret = secret });
+                else
+                    FileLogUtility.Error(string.Format("{0} provides the same Token {1} that has been registered when calling AddWeChatProxy in IWeChatProxyService so it's ignored.", bundle.SymbolicName, token));
             }
             else
-                FileLogUtility.Error(string.Format("Hander and Token should not be empty when call AddWeChatProxy in IWeChatProxyService from Bundle {0}.", bundle.SymbolicName));
+                FileLogUtility.Error(string.Format("Hander and Token should not be empty when calling AddWeChatProxy in IWeChatProxyService from Bundle {0}.", bundle.SymbolicName));
         }
 
         public void RemoveWeChatProxy(string name, IBundle bundle)
@@ -29,7 +34,7 @@ namespace UIShell.WeChatProxyPlugin.Impl
                     serviceProxies.Remove(item);
             }
             else
-                FileLogUtility.Error(string.Format("Name hould not be empty when call RemoveWeChatProxy in IWeChatProxyService from Bundle {0}.", bundle.SymbolicName));
+                FileLogUtility.Error(string.Format("Name hould not be empty when calling RemoveWeChatProxy in IWeChatProxyService from Bundle {0}.", bundle.SymbolicName));
         }
     }
 }
