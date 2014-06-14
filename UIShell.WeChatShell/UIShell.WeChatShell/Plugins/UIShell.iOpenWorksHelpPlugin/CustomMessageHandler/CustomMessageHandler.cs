@@ -156,7 +156,7 @@ namespace UIShell.iOpenWorksHelpPlugin.CustomMessageHandler
                 {
                     var userInfo = CommonApi.GetUserInfo(_tokenRes.access_token, requestMessage.FromUserName);
 
-                    result.AppendFormat("微信昵称是：{0}，来自：{1} {2} {3}，性别:{4}，最后一次关注时间为{5}\r\n\r\n", userInfo.nickname, userInfo.country, userInfo.province, userInfo.city, userInfo.sex == 0 ? "未知" : (userInfo.sex == 1) ? "男" : "女", GetTime(userInfo.subscribe_time).ToString());
+                    result.AppendFormat("微信昵称是：{0}\r\n\r\n", userInfo.nickname);
                 }
 
                 if (CurrentMessageContext.RequestMessages.Count > 1)
